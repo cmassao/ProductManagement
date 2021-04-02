@@ -41,5 +41,10 @@ public class Food extends Product{
         return (bestBefore.isEqual(LocalDate.now())) ? super.getDiscount() : BigDecimal.ZERO;
     }
 
+    @Override
+    public Product applyRating(Rating newRating) {
+        return new Food(getId(),getName(),getPrice(),newRating, bestBefore); 
+    }
+
     
 }

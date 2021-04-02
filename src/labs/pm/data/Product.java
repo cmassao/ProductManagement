@@ -18,6 +18,7 @@ package labs.pm.data;
 
 import java.math.BigDecimal;
 import static java.math.RoundingMode.HALF_UP;
+import java.time.LocalDate;
 import java.util.Objects;
 import static labs.pm.data.Rating.*;
 
@@ -33,7 +34,7 @@ import static labs.pm.data.Rating.*;
  * @version 4.0
  * @author cmass
  */
-public class Product {
+public abstract class Product {
 
     /**
      * A constant that define a {@link java.math.BigDecimal BigDecimal} value of
@@ -47,11 +48,11 @@ public class Product {
     private String name;
     private BigDecimal price;
     private Rating rating;
-    
-    public Product(){
-        this(0,"no name",BigDecimal.ZERO);
+
+    public Product() {
+        this(0, "no name", BigDecimal.ZERO);
     }
-    
+
     public Product(int id, String name, BigDecimal price, Rating rating) {
         this.id = id;
         this.name = name;
@@ -60,9 +61,9 @@ public class Product {
     }
 
     public Product(int id, String name, BigDecimal price) {
-        this(id,name,price,NOT_RATED);
+        this(id, name, price, NOT_RATED);
     }
-    
+
     public int getId() {
         return id;
     }
@@ -70,7 +71,6 @@ public class Product {
 //    public void setId(final int id) {
 //        this.id = id;
 //    }
-
     public String getName() {
         return name;
     }
@@ -78,7 +78,6 @@ public class Product {
 //    public void setName(final String name) {
 //        this.name = name;
 //    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -87,7 +86,6 @@ public class Product {
 ////        price = BigDecimal.ONE;
 //        this.price = price;
 //    }
-
     /**
      * Calculates discount based on a product price and
      * {@link DISCOUNT_RATE discount rate}
@@ -101,14 +99,24 @@ public class Product {
     public Rating getRating() {
         return rating;
     }
-    
-    public Product applyRating(Rating newRating){
-        return new Product(this.id,this.name,this.price,newRating);
+
+    public abstract Product applyRating(Rating newRating);
+//    {
+//        return new Product(this.id,this.name,this.price,newRating);
+//    }
+
+    /**
+     * Get the value of best before date for the product
+     *
+     * @return the value of bestBefore
+     */
+    public LocalDate getBestBefore() {
+        return LocalDate.now();
     }
 
     @Override
     public String toString() {
-        return id + ", " + name + ", " + price + ", "+ getDiscount() + ", " + rating.getStars();
+        return id + ", " + name + ", " + price + ", " + getDiscount() + ", " + rating.getStars() + ", " + getBestBefore();
     }
 
     @Override
@@ -120,12 +128,14 @@ public class Product {
 
     @Override
     public boolean equals(Object obj) {
-        if(this==obj){return true;}
-        if(obj instanceof Product){
-            final Product other = (Product)obj;
-            return this.id==other.id && Objects.equals(this.name, other.name);
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Product) {
+            final Product other = (Product) obj;
+            return this.id == other.id && Objects.equals(this.name, other.name);
         }
         return false;
     }
- 
+
 }
