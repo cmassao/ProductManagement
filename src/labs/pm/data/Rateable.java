@@ -24,6 +24,6 @@ public interface Rateable<T> {
     }
     
     public static Rating convert(int stars){
-        return (stars>=0&&stars<=0) ? Rating.values()[stars] : DEFAULT_RATING;
+        return (stars>=0&&stars<=5) ? Rating.values()[stars] : DEFAULT_RATING;
     }
 }
